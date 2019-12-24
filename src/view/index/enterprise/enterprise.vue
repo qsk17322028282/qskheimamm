@@ -127,6 +127,18 @@ export default {
          this.formInline[key] = ""
       }
       this.enterpriseGet()
+    },
+      //页码改变的点击事件
+    handleCurrentChange(page) {
+      // window.console.log(page);
+      this.page = page;
+      this.enterpriseGet();
+    },
+    //页容量改变
+    handleSizeChange(limit) {
+      window.console.log(limit);
+      this.limit = limit;
+      this.enterpriseGet();
     }
   },
   created() {
