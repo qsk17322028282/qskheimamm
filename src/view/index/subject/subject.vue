@@ -94,9 +94,6 @@ export default {
         rid: "",
         status: ""
       },
-      user: "",
-      region: "",
-      currentPage4: 1,
       //新增弹框是否显示
       dialogFormVisible: false,
       // 编辑弹框是否显示

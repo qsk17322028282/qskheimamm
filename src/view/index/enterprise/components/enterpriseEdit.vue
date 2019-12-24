@@ -2,8 +2,8 @@
   <!-- 新增学科弹框 -->
   <el-dialog center class="addsubStyle" title="编辑学科" :visible.sync="$parent.editdialogFormVisible">
     <el-form ref="editForm" :model="editForm" :rules="addFromRules">
-      <el-form-item required label="学科编号" prop="rid" :label-width="formLabelWidth">
-        <el-input v-model="editForm.rid" autocomplete="off"></el-input>
+      <el-form-item required label="学科编号" prop="eid" :label-width="formLabelWidth">
+        <el-input v-model="editForm.eid" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item required label="学科名称" prop="name" :label-width="formLabelWidth">
         <el-input v-model="editForm.name" autocomplete="off"></el-input>
@@ -26,21 +26,21 @@
 </template>
 
 <script>
-import {subjectEdit} from '../../../../api/subject'
+import {enterpriseEdit} from '../../../../api/enterprise'
 export default {
   data() {
     return {
       //弹框尺寸
       formLabelWidth: "100px",
       editForm: {
-        rid: "",
+        eid: "",
         name: "",
         short_name: "",
         intro: "",
         remark: ""
       },
       addFromRules: {
-        rid: [{ required: true, message: "学科编号不能为空", trigger: "blur" }],
+        eid: [{ required: true, message: "学科编号不能为空", trigger: "blur" }],
         name: [{ required: true, message: "学科名称不能为空", trigger: "blur" }]
       }
     };
@@ -49,10 +49,10 @@ export default {
     submitForm() {
       this.$refs.editForm.validate(valid => {
         if (valid) {
-          subjectEdit(this.editForm).then(res=>{
+          enterpriseEdit(this.editForm).then(res=>{
             window.console.log(res);
             if(res.code === 200 ){
-              this.$parent.subjectGet()
+              this.$parent.enterpriseGet()
               
               this.$message.success("编辑成功");
               this.$refs.editForm.resetFields();

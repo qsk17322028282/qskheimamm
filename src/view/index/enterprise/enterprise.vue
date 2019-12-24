@@ -81,7 +81,11 @@ import enterpriseAdd from "./components/enterpriseAdd";
 //导入企业编辑弹出框
 import enterpriseEdit from "./components/enterpriseEdit";
 //导入axios封装的接口
-import { enterpriseList, enterpriseRemove,enterpriseStatus } from "../../../api/enterprise";
+import {
+  enterpriseList,
+  enterpriseRemove,
+  enterpriseStatus
+} from "../../../api/enterprise";
 export default {
   components: {
     enterpriseAdd,
@@ -97,6 +101,7 @@ export default {
       },
       //新增弹框是否显示
       dialogFormVisible: false,
+      editdialogFormVisible:false,
       //默认显示的页数
       page: 1,
       //默认显示的行数
@@ -128,15 +133,20 @@ export default {
       }
       this.enterpriseGet();
     },
+    //编辑按钮点击事件
+    showEdit(item) {
+      this.editdialogFormVisible = true;
+      this.$refs.editRef.editForm = JSON.parse(JSON.stringify(item));
+    },
     //状态按钮点击事件
     enterpriseStatus(item) {
       enterpriseStatus({
         id: item.id
       }).then(res => {
-         if (res.code ===200) {
-         this.$message.success("恭喜您改变状态成功");
-         this.enterpriseGet();
-         }
+        if (res.code === 200) {
+          this.$message.success("恭喜您改变状态成功");
+          this.enterpriseGet();
+        }
         window.console.log(res);
       });
     },
