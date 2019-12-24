@@ -41,7 +41,9 @@ export default {
       },
       addFromRules: {
         eid: [{ required: true, message: "学科编号不能为空", trigger: "blur" }],
-        name: [{ required: true, message: "学科名称不能为空", trigger: "blur" }]
+        name: [{ required: true, message: "学科名称不能为空", trigger: "blur" }],
+        short_name: [{ required: true, message: "企业简称不能为空", trigger: "blur" }],
+        intro: [{ required: true, message: "企业简介不能为空", trigger: "blur" }]
       }
     };
   },
