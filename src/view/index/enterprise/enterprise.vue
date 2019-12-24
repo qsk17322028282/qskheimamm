@@ -52,7 +52,7 @@
               type="text"
               @click="subjectstatus(scope.row)"
             >{{scope.row.status===1?"禁用":"启用"}}</el-button>
-            <el-button type="text" @click="removeSubject(scope.row)">删除</el-button>
+            <el-button type="text" @click="removeEnterprise(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -81,7 +81,7 @@ import enterpriseAdd from "./components/enterpriseAdd";
 //导入企业编辑弹出框
 import enterpriseEdit from "./components/enterpriseEdit";
 //导入axios封装的接口
-import { enterpriseList } from "../../../api/enterprise";
+import { enterpriseList,enterpriseRemove } from "../../../api/enterprise";
 export default {
   components: {
     enterpriseAdd,
@@ -127,6 +127,28 @@ export default {
          this.formInline[key] = ""
       }
       this.enterpriseGet()
+    },
+    //删除按钮点击事件
+    removeEnterprise(item){
+      //  window.console.log(item);
+       enterpriseRemove({
+          id:item.id
+       }).then(res=>{
+            if (res.code === 200) {
+            this.$confirm('确定要删除这条内容么', '警告', {
+               confirmButtonText: '确定',
+               cancelButtonText: '取消',
+               type: 'warning'
+            }).then(() => {
+               this.$message.success("恭喜您删除成功");
+               this.enterpriseGet();
+               
+            }).catch(() => {
+               this.$message.success("就知道你不会删除我的");
+            });
+        }
+      //  window.console.log(res);
+       })
     },
       //页码改变的点击事件
     handleCurrentChange(page) {
