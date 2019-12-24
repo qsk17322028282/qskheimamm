@@ -1,10 +1,8 @@
 <template>
-  <router-view></router-view>
+  <div>我是数据概况页面</div>
 </template>
 
 <script>
-
-
 export default {
 
 }

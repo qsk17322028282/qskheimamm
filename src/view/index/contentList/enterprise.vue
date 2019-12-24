@@ -1,10 +1,8 @@
 <template>
-  <router-view></router-view>
+   <div>我是数据企业列表页</div>
 </template>
 
 <script>
-
-
 export default {
 
 }
