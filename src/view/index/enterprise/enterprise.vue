@@ -50,7 +50,7 @@
             <el-button type="text" @click="showEdit(scope.row)">编辑</el-button>
             <el-button
               type="text"
-              @click="subjectstatus(scope.row)"
+              @click="enterpriseStatus(scope.row)"
             >{{scope.row.status===1?"禁用":"启用"}}</el-button>
             <el-button type="text" @click="removeEnterprise(scope.row)">删除</el-button>
           </template>
@@ -81,7 +81,7 @@ import enterpriseAdd from "./components/enterpriseAdd";
 //导入企业编辑弹出框
 import enterpriseEdit from "./components/enterpriseEdit";
 //导入axios封装的接口
-import { enterpriseList,enterpriseRemove } from "../../../api/enterprise";
+import { enterpriseList, enterpriseRemove,enterpriseStatus } from "../../../api/enterprise";
 export default {
   components: {
     enterpriseAdd,
@@ -103,54 +103,67 @@ export default {
       limit: 2,
       //下拉框到指定页面
       pageSizes: [2, 4, 6, 8],
-       // 总条数
+      // 总条数
       total: 0,
       listContent: []
     };
   },
   methods: {
-   //   搜索按钮的点击事件
+    //   搜索按钮的点击事件
     enterpriseGet() {
       enterpriseList({
         page: this.page,
         limit: this.limit,
         ...this.formInline
       }).then(res => {
-         this.listContent = res.data.items;
+        this.listContent = res.data.items;
         this.total = res.data.pagination.total;
         window.console.log(res);
       });
     },
     //清除按钮点击事件
-    clearForm(){
-      for(var key in this.formInline){
-         this.formInline[key] = ""
+    clearForm() {
+      for (var key in this.formInline) {
+        this.formInline[key] = "";
       }
-      this.enterpriseGet()
+      this.enterpriseGet();
+    },
+    //状态按钮点击事件
+    enterpriseStatus(item) {
+      enterpriseStatus({
+        id: item.id
+      }).then(res => {
+         if (res.code ===200) {
+         this.$message.success("恭喜您改变状态成功");
+         this.enterpriseGet();
+         }
+        window.console.log(res);
+      });
     },
     //删除按钮点击事件
-    removeEnterprise(item){
+    removeEnterprise(item) {
       //  window.console.log(item);
-       enterpriseRemove({
-          id:item.id
-       }).then(res=>{
-            if (res.code === 200) {
-            this.$confirm('确定要删除这条内容么', '警告', {
-               confirmButtonText: '确定',
-               cancelButtonText: '取消',
-               type: 'warning'
-            }).then(() => {
-               this.$message.success("恭喜您删除成功");
-               this.enterpriseGet();
-               
-            }).catch(() => {
-               this.$message.success("就知道你不会删除我的");
+      enterpriseRemove({
+        id: item.id
+      }).then(res => {
+        if (res.code === 200) {
+          this.$confirm("确定要删除这条内容么", "警告", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              this.$message.success("恭喜您删除成功");
+              this.enterpriseGet();
+            })
+            .catch(() => {
+              this.$message.success("就知道你不会删除我的");
             });
         }
-      //  window.console.log(res);
-       })
+        window.console.log(res);
+      });
     },
-      //页码改变的点击事件
+    //页码改变的点击事件
     handleCurrentChange(page) {
       // window.console.log(page);
       this.page = page;
@@ -164,11 +177,44 @@ export default {
     }
   },
   created() {
-     //进入页面调用列表发送axios
-     this.enterpriseGet() 
+    //进入页面调用列表发送axios
+    this.enterpriseGet();
   }
 };
 </script>
 
-<style>
-</style>
+<style lang="less">
+.subject-bigbox {
+  display: flex;
+  flex-direction: column;
+  // 顶部栏
+  .subject-top {
+    // width: 1190px;
+    height: 103px;
+    margin-bottom: 20px;
+
+    .el-form-item__content {
+      width: 120px;
+    }
+
+    .short-input .el-form-item__content {
+      width: 100px;
+    }
+
+    .btn-form-item .el-form-item__content {
+      width: 100%;
+    }
+  }
+  // 主体栏
+  .subject-bottom {
+    .is-background {
+      text-align: center;
+      margin-top: 30px;
+    }
+  }
+
+  span.red {
+    color: red;
+  }
+}
+</style

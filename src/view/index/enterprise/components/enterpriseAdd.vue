@@ -53,13 +53,11 @@ export default {
             window.console.log(res);
             if(res.code === 200 ){
               this.$parent.enterpriseGet()
-              
               this.$message.success("新增成功");
               this.$refs.addForm.resetFields();
               this.$parent.dialogFormVisible = false
             }else if(res.code === 201){
               this.$message.warning("编号已存在,请重新输入");
-
             }
           })
         } else {

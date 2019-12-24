@@ -147,7 +147,7 @@ export default {
         id: status.id
       }).then(res => {
         if (res.code === 200) {
-          this.$message.success("恭喜您删除成功");
+          this.$message.success("恭喜您改变状态成功");
           this.subjectGet();
         }
         // window.console.log(res);
