@@ -52,7 +52,7 @@ export default {
       this.$refs.editForm.validate(valid => {
         if (valid) {
           enterpriseEdit(this.editForm).then(res=>{
-            window.console.log(res);
+            // window.console.log(res);
             if(res.code === 200 ){
               this.$parent.enterpriseGet()
               

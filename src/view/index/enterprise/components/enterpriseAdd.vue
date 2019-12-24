@@ -52,7 +52,7 @@ export default {
       this.$refs.addForm.validate(valid => {
         if (valid) {
           addEnterprise(this.form).then(res=>{
-            window.console.log(res);
+            // window.console.log(res);
             if(res.code === 200 ){
               this.$parent.enterpriseGet()
               this.$message.success("新增成功");

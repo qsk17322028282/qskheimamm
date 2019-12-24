@@ -123,7 +123,7 @@ export default {
       }).then(res => {
         this.listContent = res.data.items;
         this.total = res.data.pagination.total;
-        window.console.log(res);
+      //   window.console.log(res);
       });
     },
     //清除按钮点击事件
