@@ -74,7 +74,7 @@ import userAdd from "./components/userAdd";
 // //导入用户编辑弹出框
 import userEdit from "./components/userEdit";
 // //导入axios封装的接口
-import {userList,userRemove} from "../../../api/user";
+import {userList,userRemove,userStatus} from "../../../api/user";
 export default {
   components: {
     userAdd,
@@ -132,18 +132,18 @@ export default {
       this.editdialogFormVisible = true;
       this.$refs.editRef.form = JSON.parse(JSON.stringify(item));
     },
-    //状态按钮点击事件
-    // enterpriseStatus(item) {
-    //   userEdit({
-    //     id: item.id
-    //   }).then(res => {
-    //     if (res.code === 200) {
-    //       this.$message.success("恭喜您改变状态成功");
-    //       this.userSearch();
-    //     }
-    //     window.console.log(res);
-    //   });
-    // },
+    // 状态按钮点击事件
+    enterpriseStatus(item) {
+      userStatus({
+        id: item.id
+      }).then(res => {
+        if (res.code === 200) {
+          this.$message.success("恭喜您改变状态成功");
+          this.userSearch();
+        }
+        window.console.log(res);
+      });
+    },
     //删除按钮点击事件
     removeEnterprise(item) {
       //  window.console.log(item);
