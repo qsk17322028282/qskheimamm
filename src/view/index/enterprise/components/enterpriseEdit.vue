@@ -1,20 +1,20 @@
 <template>
-  <!-- 新增学科弹框 -->
-  <el-dialog center class="addsubStyle" title="编辑学科" :visible.sync="$parent.editdialogFormVisible">
+  <!-- 新增企业弹框 -->
+  <el-dialog center class="addsubStyle" title="编辑企业" :visible.sync="$parent.editdialogFormVisible">
     <el-form ref="editForm" :model="editForm" :rules="addFromRules">
-      <el-form-item required label="学科编号" prop="eid" :label-width="formLabelWidth">
+      <el-form-item required label="企业编号" prop="eid" :label-width="formLabelWidth">
         <el-input v-model="editForm.eid" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item required label="学科名称" prop="name" :label-width="formLabelWidth">
+      <el-form-item required label="企业名称" prop="name" :label-width="formLabelWidth">
         <el-input v-model="editForm.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="学科简称" prop="short_name" :label-width="formLabelWidth">
+      <el-form-item label="企业简称" prop="short_name" :label-width="formLabelWidth">
         <el-input v-model="editForm.short_name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="学科简介" prop="intro" :label-width="formLabelWidth">
+      <el-form-item label="企业简介" prop="intro" :label-width="formLabelWidth">
         <el-input v-model="editForm.intro" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="学科备注" prop="remark" :label-width="formLabelWidth">
+      <el-form-item label="企业备注" prop="remark" :label-width="formLabelWidth">
         <el-input v-model="editForm.remark" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
@@ -40,8 +40,8 @@ export default {
         remark: ""
       },
       addFromRules: {
-        eid: [{ required: true, message: "学科编号不能为空", trigger: "blur" }],
-        name: [{ required: true, message: "学科名称不能为空", trigger: "blur" }],
+        eid: [{ required: true, message: "企业编号不能为空", trigger: "blur" }],
+        name: [{ required: true, message: "企业名称不能为空", trigger: "blur" }],
         short_name: [{ required: true, message: "企业简称不能为空", trigger: "blur" }],
         intro: [{ required: true, message: "企业简介不能为空", trigger: "blur" }]
       }
