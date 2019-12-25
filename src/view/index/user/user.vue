@@ -99,7 +99,7 @@ export default {
       //默认显示的页数
       page: 1,
       //默认显示的行数
-      limit: 2,
+      limit: 4,
       //下拉框到指定页面
       pageSizes: [2, 4, 6, 8],
       // 总条数
