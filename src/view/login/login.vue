@@ -115,40 +115,9 @@
 //导入封装好的axios  api抽取
 import {login,sendsms,register} from "../../api/axiosfz";
 import {setToken} from '../../utils/token'
+import {checkPhone,checkEmail} from '../../utils/validator'
 export default {
   data() {
-    // 判断手机号
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("手机号不能为空 !"));
-      } else {
-        // 判断手机号的格式
-        // 正则
-        const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
-        if (reg.test(value) == true) {
-          callback();
-        } else {
-          callback(new Error("手机号输入错误 !"));
-        }
-      }
-    };
-    // 判断邮箱号
-    var checkEmail = (rule, value, callback) => {
-      if (!value) {
-        // alert("111")
-        return callback(new Error("邮箱不能为空 !"));
-      } else {
-        // alert("222")
-        // 判断邮箱的格式
-        // 正则
-        const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-        if (reg.test(value) == true) {
-          callback();
-        } else {
-          callback(new Error("邮箱输入错误 !"));
-        }
-      }
-    };
 
     return {
       form: {

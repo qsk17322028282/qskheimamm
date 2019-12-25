@@ -1,7 +1,7 @@
 <template>
   <!-- 新增学科弹框 -->
-  <el-dialog center class="addsubStyle" title="新增用户" :visible.sync="$parent.dialogFormVisible">
-    <el-form ref="addForm" :model="form" :rules="addFromRules">
+  <el-dialog center class="addsubStyle" title="编辑用户" :visible.sync="$parent.editdialogFormVisible">
+    <el-form ref="editForm" :model="form" :rules="editFromRUles">
       <el-form-item required label="用户名" prop="username" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off"></el-input>
       </el-form-item>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { adduser } from "../../../../api/user";
+import { userEdit } from "../../../../api/user";
 import {checkPhone,checkEmail} from '../../../../utils/validator'
 export default {
   data() {
@@ -45,14 +45,9 @@ export default {
       //弹框尺寸
       formLabelWidth: "100px",
       form: {
-        username: "",
-        email: "",
-        phone: "",
-        role_id: "",
-        status: "",
-        remark: ""
+       
       },
-      addFromRules: {
+      editFromRUles: {
         username: [
           { required: true, message: "用户名不能为空", trigger: "blur" }
         ],
@@ -64,28 +59,30 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$refs.addForm.validate(valid => {
+      this.$refs.editForm.validate(valid => {
         if (valid) {
-          adduser(this.form).then(res => {
+          userEdit(this.form).then(res=>{
             // window.console.log(res);
-            if (res.code === 200) {
-              this.$parent.userSearch();
-              this.$message.success("新增成功");
-              this.$refs.addForm.resetFields();
-              this.$parent.dialogFormVisible = false;
-            } else if (res.code === 201) {
-              this.$message.warning(res.message);
+            if(res.code === 200 ){
+              this.$parent.userSearch()
+              
+              this.$message.success("编辑成功");
+              this.$refs.editForm.resetFields();
+              this.$parent.editdialogFormVisible = false
+            }else if(res.code === 201){
+              this.$message.warning("编号已存在,请重新输入");
+
             }
-          });
+          })
         } else {
           this.$message.error("表单输入错误,请检查");
         }
       });
     },
-    resetForm() {
-      this.$refs.addForm.resetFields();
-      this.$parent.dialogFormVisible = false;
-    }
+     resetForm() {
+        this.$refs.editForm.resetFields();
+        this.$parent.editdialogFormVisible = false
+      },
   }
 };
 </script>
