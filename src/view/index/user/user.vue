@@ -10,7 +10,7 @@
           <el-input v-model="formInline.email" placeholder="用户邮箱"></el-input>
         </el-form-item>
         <el-form-item label="角色">
-          <el-input class="short-input" v-model="formInline.role" placeholder="角色"></el-input>
+          <el-input class="short-input" v-model="formInline.role_id" placeholder="角色"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="formInline.status" placeholder="请选择状态">
@@ -33,7 +33,7 @@
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="role" label="角色"></el-table-column>
+        <el-table-column prop="role_id" label="角色"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
@@ -65,7 +65,7 @@
       ></el-pagination>
     </el-card>
     <!-- 新增弹窗出口 -->
-    <!-- <enterpriseAdd></enterpriseAdd> -->
+    <userAdd></userAdd>
     <!-- 编辑弹窗出口 -->
     <!-- <enterpriseEdit ref="editRef"></enterpriseEdit> -->
   </div>
@@ -73,23 +73,22 @@
 
 <script>
 // //导入用户新增弹出框
-// import enterpriseAdd from "./components/enterpriseAdd";
+import userAdd from "./components/userAdd";
 // //导入用户编辑弹出框
 // import enterpriseEdit from "./components/enterpriseEdit";
 // //导入axios封装的接口
 import {userList,} from "../../../api/user";
 export default {
-  // components: {
-  //   enterpriseAdd,
-  //   enterpriseEdit
-  // },
+  components: {
+    userAdd,
+  },
   data() {
     return {
       formInline: {
         username: "",
         phone: "",
         email: "",
-        role: "",
+        role_id: "",
         remark: "",
         status: "",
         address:''
