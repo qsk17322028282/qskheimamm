@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="学科">
           <el-select v-model="formInline.subject" placeholder="请选择学科">
-            <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            <el-option v-for="item in subject" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="阶段">
@@ -17,7 +17,7 @@
         </el-form-item>
         <el-form-item label="企业">
           <el-select v-model="formInline.enterprise" placeholder="请选择企业">
-            <el-option v-for="item in enterpriseList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            <el-option v-for="item in enterprise" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="题型">
@@ -54,7 +54,7 @@
         <el-form-item class="btn-form-item">
           <el-button type="primary" @click="getData">搜索</el-button>
           <el-button @click="clear">清除</el-button>
-          <el-button @click="addFormVisible = true" type="primary" icon="el-icon-plus">新增学科</el-button>
+          <el-button @click="addFormVisible = true" type="primary" icon="el-icon-plus">新增试题</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -112,38 +112,42 @@
       </el-pagination>
     </el-card>
     <!-- 新增框 -->
-    <addDialog></addDialog>
+    <addQuestion></addQuestion>
     <!-- 编辑框框 -->
-    <editDialog ref="editDialog"></editDialog>
+    <!-- <editDialog ref="editDialog"></editDialog> -->
   </div>
 </template>
 
 <script>
-// //导入用户新增弹出框
-// import userAdd from "./components/userAdd";
-// // //导入用户编辑弹出框
-// import userEdit from "./components/userEdit";
-// // //导入axios封装的接口
-// import {userList,userRemove,userStatus} from "../../../api/user";
+// //导入题库新增弹出框
+import addQuestion from "./components/addQuestion";
+
+// // //导入axios封装题库的接口
+// import {questionList} from "../../../api/question";
+//导入学科列表接口
+import {subjectList} from '../../../api/subject'
+//导入企业列表接口
+import {enterpriseList} from '../../../api/enterprise'
+
 export default {
-//   components: {
-//     userAdd,
-//     userEdit
-//   },
+  components: {
+    addQuestion
+  },
   data() {
     return {
-      formInline: {
-        username: "",
-        phone: "",
-        email: "",
-        role_id: "",
-        remark: "",
-        status: "",
-        address:''
-      },
+      formInline: {},
+      // table绑定的数据
+      tableData: [],
+      //学科获取数据数组
+      subject:[],
+      //企业获取数据数组
+      enterprise:[],
+
+
+
+
       //新增弹框是否显示
-      dialogFormVisible: false,
-      editdialogFormVisible: false,
+      addFormVisible: false,
       //默认显示的页数
       page: 1,
       //默认显示的行数
@@ -155,85 +159,24 @@ export default {
       listContent: []
     };
   },
-//   methods: {
-//     //   搜索按钮的点击事件
-//     userSearch() {
-//       userList({
-//         page: this.page,
-//         limit: this.limit,
-//         ...this.formInline
-//       }).then(res => {
-//         this.listContent = res.data.items;
-//         this.total = res.data.pagination.total;
-//         window.console.log(res);
-//       });
-//     },
-//     //清除按钮点击事件
-//     clearForm() {
-//       for (var key in this.formInline) {
-//         this.formInline[key] = "";
-//       }
-//       this.userSearch();
-//     },
-//     // //编辑按钮点击事件
-//     showEdit(item) {
-//       window.console.log(item);
-//       // alert("1222")
-//       this.editdialogFormVisible = true;
-//       this.$refs.editRef.form = JSON.parse(JSON.stringify(item));
-//     },
-//     // 状态按钮点击事件
-//     enterpriseStatus(item) {
-//       userStatus({
-//         id: item.id
-//       }).then(res => {
-//         if (res.code === 200) {
-//           this.$message.success("恭喜您改变状态成功");
-//           this.userSearch();
-//         }
-//         window.console.log(res);
-//       });
-//     },
-//     //删除按钮点击事件
-//     removeEnterprise(item) {
-//       //  window.console.log(item);
-//       userRemove({
-//         id: item.id
-//       }).then(res => {
-//         if (res.code === 200) {
-//           this.$confirm("确定要删除这条内容么", "警告", {
-//             confirmButtonText: "确定",
-//             cancelButtonText: "取消",
-//             type: "warning"
-//           })
-//             .then(() => {
-//               this.$message.success("恭喜您删除成功");
-//               this.userSearch();
-//             })
-//             .catch(() => {
-//               this.$message.success("就知道你不会删除我的");
-//             });
-//         }
-//         window.console.log(res);
-//       });
-//     },
-//     //页码改变的点击事件
-//     handleCurrentChange(page) {
-//       // window.console.log(page);
-//       this.page = page;
-//       this.userSearch();
-//     },
-//     //页容量改变
-//     handleSizeChange(limit) {
-//       window.console.log(limit);
-//       this.limit = limit;
-//       this.userSearch();
-//     }
-//   },
-//   created() {
-//     //进入页面调用列表发送axios
-//     this.userSearch();
-//   }
+  methods: {
+     
+  },
+  created() {
+     //题库列表获取
+   //   questionList(this.formInline).then(res=>{
+   //      window.console.log(res);
+   //   })
+     //学科列表获取
+     subjectList(this.formInline).then(res=>{
+        this.subject = res.data.items
+      //   window.console.log(this.subject);
+     })
+     //企业列表获取
+     enterpriseList(this.formInline).then(res=>{
+        this.enterprise = res.data.items
+     })
+  },
 };
 </script>
 
@@ -284,3 +227,4 @@ export default {
   }
 }
 </style>
+ 
