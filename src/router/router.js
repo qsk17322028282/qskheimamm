@@ -6,17 +6,7 @@ import VueRouter from 'vue-router'
 import login from '../view/login/login'
 //导入index组件
 import index from '../view/index/index'
-//导入index列表下的内容页面
-// 1,数据页
-import chart from '../view/index/chart/chart'
-// 2,用户页
-import user from '../view/index/user/user'
-// 3,题库页
-import question from '../view/index/question/question'
-// 4,企业页
-import enterprise from '../view/index/enterprise/enterprise'
-// 5,学科页
-import subject from '../view/index/subject/subject'
+
 //导入token令牌
 import { getToken, removeToken } from '../utils/token'
 // import { ElCarousel } from 'element-ui/types/carousel'
@@ -26,7 +16,8 @@ import { Message } from 'element-ui';
 import { userInfo } from "../api/axiosfz";
 //导入store
 import store from '../store/store'
-
+//导入路由子组件设置
+import children from './childern'
 
 
 
@@ -50,37 +41,18 @@ const router = new VueRouter({
     {
       path: '/index',//写入一个地址
       component: index,//这里要填入一个组件名(填入import的名字)，也就是上面地址对应的组件
-      children: [
-        //1,数据页
-        {
-          path: 'chart',//写入一个地址
-          component: chart,//这里要填入一个组件名(填入import的名字)，也就是上面地址对应的组件
-        },
-        //2,用户页
-        {
-          path: 'user',//写入一个地址
-          component: user,//这里要填入一个组件名(填入import的名字)，也就是上面地址对应的组件
-        },
-        //3,题库页
-        {
-          path: 'question',//写入一个地址
-          component: question,//这里要填入一个组件名(填入import的名字)，也就是上面地址对应的组件
-        },
-        //4,企业页
-        {
-          path: 'enterprise',//写入一个地址
-          component: enterprise,//这里要填入一个组件名(填入import的名字)，也就是上面地址对应的组件
-        },
-        //5,学科页
-        {
-          path: 'subject',//写入一个地址
-          component: subject,//这里要填入一个组件名(填入import的名字)，也就是上面地址对应的组件
-        },
-      ]
+      meta: {
+        power: [2, 3,4]
+      },
+     children
     },
   ]
 })
+
+
+//白名单
 const whitePaths = ["/login", "/"]
+
 //注册一个导航守卫
 router.beforeEach((to, from, next) => {
   // alert('111')
@@ -96,13 +68,23 @@ router.beforeEach((to, from, next) => {
       userInfo().then(res => {
         // window.console.log(res.data.data);
         if (res.data.code === 200) {
-          next()
           // 用户头像图片需要加上基地址
-          // store.state.userInfo = res.data.data
-          // store.state.userInfo.avatar = `${process.env.VUE_APP_BASEURL}/${store.state.userInfo.avatar}`;
-          res.data.data.avatar = `${process.env.VUE_APP_BASEURL}/${res.data.data.avatar}`;
-          // this.userMessage = res.data.data;
-          store.commit("changeMessage",res.data.data)
+          if (res.data.data.status === 0) {
+            //状态显示禁用的用户
+            next("./login")
+            Message.error("您已经被禁止登录请联系管理员");
+          } else {
+            //状态是启用的用户
+            res.data.data.avatar = `${process.env.VUE_APP_BASEURL}/${res.data.data.avatar}`;
+            // 提交到仓库中
+            store.commit("changeMessage", res.data.data)
+
+            if(to.meta.power.includes(res.data.data.role_id)){
+              next()
+            }else{
+              Message.error("您没有访问的权限,请联系管理员");
+            }
+          }
         } else if (res.data.code === 206) {
           Message.error("伪造令牌是不好的");
           removeToken();

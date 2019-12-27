@@ -23,11 +23,15 @@
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
         >
-          <el-menu-item index="/index/chart">
-            <i class="el-icon-pie-chart"></i>
-            <span slot="title">数据概览</span>
+
+        <template v-for="item in children">
+          <el-menu-item :key="item.path" :index="'/index/'+ item.path" v-if="item.meta.power.includes(userInfo.role_id)">
+            <i :class="item.meta.icon"></i>
+            <span slot="title">{{item.meta.name}}</span>
           </el-menu-item>
-          <el-menu-item index="/index/user">
+ </template>
+
+          <!-- <el-menu-item index="/index/user">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
@@ -42,7 +46,7 @@
           <el-menu-item index="/index/subject">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
-          </el-menu-item>
+          </el-menu-item> -->
         </el-menu>
       </el-aside>
       <!-- 主体内容 -->
@@ -58,11 +62,15 @@ import { removeToken } from "../../utils/token";
 // import { userInfo } from "../../api/axiosfz";
 import { userlogout } from "../../api/axiosfz";
 // import store from '../../store/store'
+//导入路由子组件设置
+import children from '../../router/childern'
 export default {
   name: "index",
   data() {
     return {
-      isCollapse: false
+      isCollapse: false,
+      children
+
     };
   },
   methods: {
@@ -183,7 +191,7 @@ export default {
     }
   }
   .my-Main {
-    background-color: #E8E9EC;
+    background-color: #e8e9ec;
   }
 }
 </style>
