@@ -67,6 +67,11 @@ export default {
         trigger: "item",
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
+       title: {
+        top: 34,
+        left: '55',
+        text: '整体数据',
+    },
       legend: {
         type: 'scroll',
         orient: 'vertical',
@@ -163,6 +168,7 @@ export default {
   }
   .main_card {
     height: 571px;
+    margin-top: 13px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 2px 5px 0px rgba(63, 63, 63, 0.35);
     border-radius: 4px;
