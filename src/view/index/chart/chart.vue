@@ -34,7 +34,7 @@
 
 <script>
 //导入接口信息
-import { dataTitle } from "../../../api/chart";
+import { dataTitle,dataStatistics } from "../../../api/chart";
 // 导入 echarts
 import echarts from "echarts";
 export default {
@@ -51,63 +51,64 @@ export default {
     };
   },
   mounted() {
-    // 数据获取
+    // 头部数据获取
     dataTitle().then(res => {
       // window.console.log(res)
       this.headData = res.data;
     });
-
+    //主体部分数据获取
+    dataStatistics().then(res=>{
+      window.console.log(res);
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(this.$refs.main_card);
-
     // 指定图表的配置项和数据
     var option = {
-    tooltip: {
-        trigger: 'item',
+      tooltip: {
+        trigger: "item",
         formatter: "{a} <br/>{b}: {c} ({d}%)"
-    },
-    legend: {
+      },
+      legend: {
+        type: 'scroll',
         orient: 'vertical',
-        x: 'right',
-        data:['直接访问','邮件营销','联盟广告']
-    },
-    series: [
+        right: 50,
+        top: 50,
+        bottom: 50,
+        data: res.data
+      },
+      series: [
         {
-            color:['#F76137','#F9B358','#409EFF'],
-            name:'访问来源',
-            type:'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-                normal: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    show: true,
-                    textStyle: {
-                        fontSize: '30',
-                        fontWeight: 'bold'
-                    }
-                }
+          color: ["#F76137", "#F9B358", "#409EFF"],
+          name: "访问来源",
+          type: "pie",
+          radius: ["50%", "70%"],
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: false,
+              position: "center"
             },
-            labelLine: {
-                normal: {
-                    show: false
-                }
-            },
-            data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-            ]
+            emphasis: {
+              show: true,
+              textStyle: {
+                fontSize: "30",
+                fontWeight: "bold"
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          // 使用后台发送的数据
+          data: res.data
         }
-    ]
-};
-
-
+      ]
+    };
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+    })
+
   }
 };
 </script>
