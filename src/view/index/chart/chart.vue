@@ -28,17 +28,19 @@
         </li>
       </ul>
     </el-card>
-    <el-card class="main_card"></el-card>
+    <div class="main_card" ref="main_card"></div>
   </div>
 </template>
 
 <script>
 //导入接口信息
-import { dataTitle,} from "../../../api/chart";
+import { dataTitle } from "../../../api/chart";
+// 导入 echarts
+import echarts from "echarts";
 export default {
   data() {
     return {
-       headData: {
+      headData: {
         total_done_questions: 0,
         personal_questions: 0,
         total_users: 14,
@@ -46,15 +48,67 @@ export default {
         increment_questions: 6,
         total_questions: 7
       }
-    }
+    };
   },
   mounted() {
-     // 数据获取
+    // 数据获取
     dataTitle().then(res => {
       // window.console.log(res)
       this.headData = res.data;
     });
-  },
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(this.$refs.main_card);
+
+    // 指定图表的配置项和数据
+    var option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        x: 'right',
+        data:['直接访问','邮件营销','联盟广告']
+    },
+    series: [
+        {
+            color:['#F76137','#F9B358','#409EFF'],
+            name:'访问来源',
+            type:'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '30',
+                        fontWeight: 'bold'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data:[
+                {value:335, name:'直接访问'},
+                {value:310, name:'邮件营销'},
+                {value:234, name:'联盟广告'},
+            ]
+        }
+    ]
+};
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+  }
 };
 </script>
 
@@ -107,6 +161,10 @@ export default {
     }
   }
   .main_card {
+    height: 571px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 5px 0px rgba(63, 63, 63, 0.35);
+    border-radius: 4px;
   }
 }
 </style>
